@@ -11,6 +11,7 @@ export class CreateUserRequestDto {
     name: string = ''
 
     @IsEnum(Role)
+    @IsNotEmpty()
     role: Role = Role.PIC_STAFF
 
     @IsString()

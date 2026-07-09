@@ -3,11 +3,11 @@ import { UserCreatedEvent } from "./events/user-created.event";
 
 export enum Role {
     BPH = 'BPH',
-    KADIV = 'KADIV',
-    PIC_STAFF = 'PIC/STAFF',
-    BENDAHARA = 'BENDAHARA',
-    SEKRETARIS = 'SEKRETARIS',
-    ADMIN = 'ADMIN'
+    KADIV = 'Kadiv',
+    PIC_STAFF = 'PIC/Staff',
+    BENDAHARA = 'Bendahara',
+    SEKRETARIS = 'Sekretaris',
+    ADMIN = 'Admin'
 }
 
 export interface UserProps {
@@ -24,10 +24,14 @@ export class UserEntity extends AggregateRoot<UserProps> {
         super(user, id)
     }
 
-    get email(): string{return this.props.email}
-    get name(): string{return this.props.name}
-    get role(): string{return this.props.role}
-    get isActive(): boolean{return this.props.isActive}
+    get email(): string { return this.props.email }
+    get name(): string { return this.props.name }
+    get role(): Role { return this.props.role }
+    get isActive(): boolean { return this.props.isActive }
+
+    getPasswordForPersistence(): string {
+        return this.props.password;
+    }
 
     validate(): void {
 
@@ -47,7 +51,7 @@ export class UserEntity extends AggregateRoot<UserProps> {
             throw new Error("Invalid type isActive!")
         }
 
-        if(this.props.password.length < 12) {
+        if (this.props.password.length < 12) {
             throw new Error("Minimum 12 Character!")
         }
     }
@@ -56,9 +60,9 @@ export class UserEntity extends AggregateRoot<UserProps> {
     public static create(id: string, email: string, name: string, role: Role, password: string): UserEntity {
 
         const userData = new UserEntity({ email, name, role, password, isActive: true }, id);
-        
+
         userData.addDomainEvent(
-            new UserCreatedEvent(id, {email, name, role})
+            new UserCreatedEvent(id, { email, name, role })
         );
 
         return userData;
@@ -66,5 +70,9 @@ export class UserEntity extends AggregateRoot<UserProps> {
 
     public deactivate(): void {
         this.props.isActive = false
+    }
+
+    static fromPersistence(id: string, props: UserProps): UserEntity {
+        return new UserEntity(props, id)
     }
 }

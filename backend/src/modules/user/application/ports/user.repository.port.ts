@@ -1,9 +1,8 @@
-import { UserEntity } from "../../domain/user.entity";
+import { UserEntity } from '../../domain/user.entity';
 
-
-export interface UserRepository {
-    findByEmail(email:string): Promise<UserEntity | null>
-    save(user: UserEntity): Promise<UserEntity>
-    findById(id: string): Promise<UserEntity | null>
-    findAll(): Promise<UserEntity[]>
+export abstract class UserRepository {
+  abstract findByEmail(email: string): Promise<UserEntity | null>;
+  abstract save(user: UserEntity): Promise<UserEntity>;
+  abstract findById(id: string): Promise<UserEntity | null>;
+  abstract findAll(): Promise<UserEntity[]>;
 }

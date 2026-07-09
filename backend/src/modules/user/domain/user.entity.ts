@@ -68,8 +68,18 @@ export class UserEntity extends AggregateRoot<UserProps> {
         return userData;
     }
 
+    public updateProfile(email: string, name: string, role: Role): void {
+        this.props.email = email;
+        this.props.name = name;
+        this.props.role = role;
+        this.validate();
+    }
+
     public deactivate(): void {
-        this.props.isActive = false
+        if (!this.props.isActive) {
+            return;
+        }
+        this.props.isActive = false;
     }
 
     static fromPersistence(id: string, props: UserProps): UserEntity {

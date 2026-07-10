@@ -1,4 +1,5 @@
 import { AggregateRoot } from "src/libs/ddd/aggregate-root.base";
+import { WorkProgramCreatedEvent } from "./event/work-program-created.event";
 
 export enum WorkProgramStatus {
     NOT_STARTED = "NOT_STARTED",
@@ -25,6 +26,11 @@ export class WorkProgramEntity extends AggregateRoot<WorkProgramProps> {
             { name, description, status: WorkProgramStatus.NOT_STARTED, picId, deadline },
             id
         )
+
+        workProgramData.addDomainEvent(
+            new WorkProgramCreatedEvent(id, {name, picId, deadline})
+        )
+
         return workProgramData;
     }
 

@@ -103,9 +103,10 @@ export class WorkProgramEntity extends AggregateRoot<WorkProgramProps> {
         this.props.picId = picId;
     }
 
-    public updateDetail(name: string, description: string, deadline: Date): void {
+    public updateDetail(name: string, description: string, picId: string, deadline: Date): void {
         this.props.name = name
         this.props.description = description
+        this.props.picId = picId
         this.props.deadline = deadline
         this.validate()
     }

@@ -1,4 +1,4 @@
-import { WorkProgramStatus } from "../../domain/work-program.entity";
+import { WorkProgramStatus } from "../../../domain/work-program.entity";
 
 export class CreateWorkProgramCommand {
     constructor(
@@ -7,5 +7,5 @@ export class CreateWorkProgramCommand {
         public readonly status: WorkProgramStatus,
         public readonly picId: string,
         public readonly deadline: Date
-    ) {}
+    ) { }
 }

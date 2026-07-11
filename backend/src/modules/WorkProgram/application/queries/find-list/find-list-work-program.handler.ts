@@ -7,7 +7,7 @@ export class FindListWorkProgramHandler {
     constructor(private workProgramRepo: WorkProgramRepository){}
 
     async execute(query: FindListWorkProgramQuery) {
-        const workProgram = await this.workProgramRepo.findAll()
-        return workProgram
+        const workPrograms = await this.workProgramRepo.findAll()
+        return workPrograms
     }
 }

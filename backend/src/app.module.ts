@@ -4,10 +4,11 @@ import { APP_FILTER } from '@nestjs/core';
 import { DatabaseModule } from './libs/db/database.module';
 import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { WorkProgramModule } from './modules/WorkProgram/work-program.module';
 import { DomainExceptionFilter } from './libs/filters/domain-exception.filter';
 
 @Module({
-  imports: [ConfigModule.forRoot(), DatabaseModule, UserModule, AuthModule],
+  imports: [ConfigModule.forRoot(), DatabaseModule, UserModule, AuthModule, WorkProgramModule],
   providers: [
     {
       provide: APP_FILTER,

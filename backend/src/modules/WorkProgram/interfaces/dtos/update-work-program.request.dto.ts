@@ -1,6 +1,6 @@
 import { IsDateString, IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateWorkProgramRequest {
+export class UpdateWorkProgramRequest {
   @IsString()
   @IsNotEmpty()
   name: string;

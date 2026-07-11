@@ -1,5 +1,6 @@
 export class AssignPicCommand {
-    constructor(
-        public readonly picId: string
-    ){}
+  constructor(
+    public readonly id: string,
+    public readonly picId: string,
+  ) {}
 }

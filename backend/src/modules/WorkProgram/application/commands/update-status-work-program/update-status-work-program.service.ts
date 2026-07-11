@@ -1,20 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { WorkProgramRepository } from '../../ports/work-program.repository.port';
 import { WorkProgramNotFoundError } from '../../../domain/work-program.errors';
-import { UpdateWorkProgramCommand } from './update-work-program.command';
+import { UpdateStatusWorkProgramCommand } from './update-status-work-program.command';
 
 @Injectable()
-export class UpdateWorkProgramService {
+export class UpdateStatusWorkProgramService {
   constructor(private readonly workProgramRepo: WorkProgramRepository) {}
 
-  async execute(command: UpdateWorkProgramCommand): Promise<void> {
+  async execute(command: UpdateStatusWorkProgramCommand): Promise<void> {
     const workProgram = await this.workProgramRepo.findById(command.id);
 
     if (!workProgram) {
       throw new WorkProgramNotFoundError(command.id);
     }
 
-    workProgram.updateDetail(command.name, command.description, command.picId, command.deadline);
+    workProgram.updateStatus(command.status);
     await this.workProgramRepo.save(workProgram);
   }
 }

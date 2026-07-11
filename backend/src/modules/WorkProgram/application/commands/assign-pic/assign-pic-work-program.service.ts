@@ -1,20 +1,20 @@
-import { Injectable } from "@nestjs/common";
-import { WorkProgramRepository } from "../../ports/work-program.repository.port";
-import { AssignPicCommand } from "./assign-pic-work-program.command";
-
+import { Injectable } from '@nestjs/common';
+import { WorkProgramRepository } from '../../ports/work-program.repository.port';
+import { WorkProgramNotFoundError } from '../../../domain/work-program.errors';
+import { AssignPicCommand } from './assign-pic-work-program.command';
 
 @Injectable()
 export class AssignPicService {
-    constructor(private workProgramRepo: WorkProgramRepository) {}
+  constructor(private readonly workProgramRepo: WorkProgramRepository) {}
 
-    async execute(command: AssignPicCommand) {
-        const picId = await this.workProgramRepo.findByPicId(command.picId)
+  async execute(command: AssignPicCommand): Promise<void> {
+    const workProgram = await this.workProgramRepo.findById(command.id);
 
-        if(!picId) {
-            throw new Error(`Invalid ${picId}`)
-        }
-
-        picId.assignPIC(command.picId)
-        this.workProgramRepo.save(picId)
+    if (!workProgram) {
+      throw new WorkProgramNotFoundError(command.id);
     }
+
+    workProgram.assignPIC(command.picId);
+    await this.workProgramRepo.save(workProgram);
+  }
 }

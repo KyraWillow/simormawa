@@ -26,9 +26,9 @@ import { DashboardWorkProgramController } from './interfaces/controllers/dashboa
     UpdateStatusWorkProgramController,
     DeleteWorkProgramController,
     AssignPicController,
+    DashboardWorkProgramController,
     FindWorkProgramListController,
     FindWorkProgramByIdController,
-    DashboardWorkProgramController,
   ],
   providers: [
     CreateWorkProgramService,

@@ -1,9 +1,12 @@
 import { Body, Controller, HttpCode, HttpStatus, Param, Patch } from '@nestjs/common';
+import { IsEnum, IsNotEmpty } from 'class-validator';
 import { UpdateStatusWorkProgramService } from '../../application/commands/update-status-work-program/update-status-work-program.service';
 import { UpdateStatusWorkProgramCommand } from '../../application/commands/update-status-work-program/update-status-work-program.command';
 import { WorkProgramStatus } from '../../domain/work-program.entity';
 
 export class UpdateStatusRequest {
+  @IsEnum(WorkProgramStatus)
+  @IsNotEmpty()
   status: WorkProgramStatus;
 }
 

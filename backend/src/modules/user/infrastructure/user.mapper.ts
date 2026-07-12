@@ -5,7 +5,7 @@ export class UserMapper {
     toDomain(row: UserPersistenceModel): UserEntity {
         const role = row.role as Role
 
-        const props = {email: row.email, password: row.password, name: row.name, role: role, isActive: row.is_active}
+        const props = {email: row.email, password: row.password, name: row.name, role: role, isActive: !!row.is_active}
 
         return UserEntity.fromPersistence(row.id, props)
     }

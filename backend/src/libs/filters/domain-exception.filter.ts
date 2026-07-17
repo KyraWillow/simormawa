@@ -14,6 +14,11 @@ export class DomainExceptionFilter implements ExceptionFilter {
       WorkProgramNotFoundError: HttpStatus.NOT_FOUND,
       EvaluationNotFoundError: HttpStatus.NOT_FOUND,
       EvaluationAlreadySubmittedError: HttpStatus.BAD_REQUEST,
+      BudgetNotFoundError: HttpStatus.NOT_FOUND,
+      InvalidBudgetTransitionError: HttpStatus.BAD_REQUEST,
+      ProgressReportNotFoundError: HttpStatus.NOT_FOUND,
+      KasNotFoundError: HttpStatus.NOT_FOUND,
+      InsufficientBalanceError: HttpStatus.BAD_REQUEST,
     };
 
     const status = statusMap[exception.constructor.name] ?? HttpStatus.INTERNAL_SERVER_ERROR;

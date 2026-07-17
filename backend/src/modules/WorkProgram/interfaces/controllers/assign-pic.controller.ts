@@ -2,11 +2,19 @@ import { Body, Controller, HttpCode, HttpStatus, Param, Patch } from '@nestjs/co
 import { AssignPicService } from '../../application/commands/assign-pic/assign-pic-work-program.service';
 import { AssignPicCommand } from '../../application/commands/assign-pic/assign-pic-work-program.command';
 
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard } from "../../../auth/infrastructure/roles.guard";
+import { Roles } from "../../../auth/infrastructure/roles.decorator";
+import { Role } from "../../../user/domain/user.entity";
+
 export class AssignPicRequest {
   picId: string;
 }
 
 @Controller('work-programs')
+@UseGuards(AuthGuard("jwt"), RolesGuard)
+@Roles(Role.BPH, Role.KADIV, Role.ADMIN)
 export class AssignPicController {
   constructor(private readonly service: AssignPicService) {}
 

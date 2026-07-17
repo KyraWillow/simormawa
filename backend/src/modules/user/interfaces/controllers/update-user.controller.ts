@@ -3,7 +3,15 @@ import { UpdateUserService } from '../../application/commands/update-user/update
 import { UpdateUserRequestDto } from '../dtos/update-user.request.dto';
 import { UpdateUserCommand } from '../../application/commands/update-user/update-user.command';
 
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard } from "../../../auth/infrastructure/roles.guard";
+import { Roles } from "../../../auth/infrastructure/roles.decorator";
+import { Role } from "../../domain/user.entity";
+
 @Controller('users')
+@UseGuards(AuthGuard("jwt"), RolesGuard)
+@Roles(Role.ADMIN, Role.BPH)
 export class UpdateUserController {
   constructor(private readonly updateUserService: UpdateUserService) {}
 

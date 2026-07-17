@@ -3,7 +3,15 @@ import { FindListWorkProgramHandler } from '../../application/queries/find-list/
 import { FindListWorkProgramQuery } from '../../application/queries/find-list/find-list-work-program.query';
 import { WorkProgramResponseDto } from '../dtos/work-program.response.dto';
 
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard } from "../../../auth/infrastructure/roles.guard";
+import { Roles } from "../../../auth/infrastructure/roles.decorator";
+import { Role } from "../../../user/domain/user.entity";
+
 @Controller('work-programs')
+@UseGuards(AuthGuard("jwt"), RolesGuard)
+@Roles(Role.BPH, Role.KADIV, Role.PIC_STAFF, Role.SEKRETARIS, Role.ADMIN)
 export class FindWorkProgramListController {
   constructor(private readonly handler: FindListWorkProgramHandler) {}
 

@@ -3,7 +3,15 @@ import { CreateWorkProgramService } from '../../application/commands/create-work
 import { CreateWorkProgramRequest } from '../dtos/create-work-program.request.dto';
 import { CreateWorkProgramCommand } from '../../application/commands/create-work-program/create-work-program.command';
 
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard } from "../../../auth/infrastructure/roles.guard";
+import { Roles } from "../../../auth/infrastructure/roles.decorator";
+import { Role } from "../../../user/domain/user.entity";
+
 @Controller('work-programs')
+@UseGuards(AuthGuard("jwt"), RolesGuard)
+@Roles(Role.BPH, Role.KADIV, Role.ADMIN)
 export class CreateWorkProgramController {
   constructor(private readonly workProgramService: CreateWorkProgramService) {}
 

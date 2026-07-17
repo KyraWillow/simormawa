@@ -1,7 +1,7 @@
 import { DomainEvent } from "./domain-event.base";
 
 export abstract class AggregateRoot<T> {
-    constructor(protected props: T, public readonly id: string) {
+    constructor(public props: T, public readonly id: string) {
 
         this.validate()
     }

@@ -13,7 +13,15 @@ import { EvaluationDashboardHandler } from '../../application/queries/evaluation
 import { EvaluationDashboardQuery } from '../../application/queries/evaluation-dashboard/evaluation-dashboard.query';
 import { EvaluationResponseDto } from '../dtos/evaluation.response.dto';
 
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard } from "../../../auth/infrastructure/roles.guard";
+import { Roles } from "../../../auth/infrastructure/roles.decorator";
+import { Role } from "../../../user/domain/user.entity";
+
 @Controller('evaluations')
+@UseGuards(AuthGuard("jwt"), RolesGuard)
+@Roles(Role.BPH, Role.KADIV)
 export class EvaluationController {
   constructor(
     private readonly createService: CreateEvaluationService,

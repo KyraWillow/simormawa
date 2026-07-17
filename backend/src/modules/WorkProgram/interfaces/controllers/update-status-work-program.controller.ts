@@ -4,6 +4,12 @@ import { UpdateStatusWorkProgramService } from '../../application/commands/updat
 import { UpdateStatusWorkProgramCommand } from '../../application/commands/update-status-work-program/update-status-work-program.command';
 import { WorkProgramStatus } from '../../domain/work-program.entity';
 
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard } from "../../../auth/infrastructure/roles.guard";
+import { Roles } from "../../../auth/infrastructure/roles.decorator";
+import { Role } from "../../../user/domain/user.entity";
+
 export class UpdateStatusRequest {
   @IsEnum(WorkProgramStatus)
   @IsNotEmpty()
@@ -11,6 +17,8 @@ export class UpdateStatusRequest {
 }
 
 @Controller('work-programs')
+@UseGuards(AuthGuard("jwt"), RolesGuard)
+@Roles(Role.BPH, Role.KADIV, Role.PIC_STAFF, Role.ADMIN)
 export class UpdateStatusWorkProgramController {
   constructor(private readonly service: UpdateStatusWorkProgramService) {}
 

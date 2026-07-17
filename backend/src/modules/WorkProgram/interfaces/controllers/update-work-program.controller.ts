@@ -3,7 +3,15 @@ import { UpdateWorkProgramService } from '../../application/commands/update-work
 import { UpdateWorkProgramRequest } from '../dtos/update-work-program.request.dto';
 import { UpdateWorkProgramCommand } from '../../application/commands/update-work-program/update-work-program.command';
 
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "@nestjs/passport";
+import { RolesGuard } from "../../../auth/infrastructure/roles.guard";
+import { Roles } from "../../../auth/infrastructure/roles.decorator";
+import { Role } from "../../../user/domain/user.entity";
+
 @Controller('work-programs')
+@UseGuards(AuthGuard("jwt"), RolesGuard)
+@Roles(Role.BPH, Role.KADIV, Role.ADMIN)
 export class UpdateWorkProgramController {
   constructor(private readonly updateWorkProgramService: UpdateWorkProgramService) {}
 

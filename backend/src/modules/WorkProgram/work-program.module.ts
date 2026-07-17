@@ -18,6 +18,8 @@ import { AssignPicController } from './interfaces/controllers/assign-pic.control
 import { FindWorkProgramListController } from './interfaces/controllers/find-work-program-list.controller';
 import { FindWorkProgramByIdController } from './interfaces/controllers/find-work-program-by-id.controller';
 import { DashboardWorkProgramController } from './interfaces/controllers/dashboard-work-program.controller';
+import { LpjController } from './interfaces/controllers/lpj.controller';
+import { LpjHandler } from './application/queries/lpj/lpj.handler';
 
 @Module({
   controllers: [
@@ -29,6 +31,7 @@ import { DashboardWorkProgramController } from './interfaces/controllers/dashboa
     DashboardWorkProgramController,
     FindWorkProgramListController,
     FindWorkProgramByIdController,
+    LpjController,
   ],
   providers: [
     CreateWorkProgramService,
@@ -39,6 +42,7 @@ import { DashboardWorkProgramController } from './interfaces/controllers/dashboa
     FindListWorkProgramHandler,
     FindByIdWorkProgramHandler,
     DashboardWorkProgramHandler,
+    LpjHandler,
     WorkProgramMapper,
     { provide: WorkProgramRepository, useClass: WorkProgramRepositoryImpl },
   ],

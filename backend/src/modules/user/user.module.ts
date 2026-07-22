@@ -7,6 +7,8 @@ import { FindUserByIdController } from './interfaces/controllers/find-user-by-id
 import { CreateUserService } from './application/commands/create-user/create-user.service';
 import { UpdateUserService } from './application/commands/update-user/update-user.service';
 import { DeactivateUserService } from './application/commands/deactivate-user/deactivate-user.service';
+import { DeleteUserController } from './interfaces/controllers/delete-user.controller';
+import { DeleteUserService } from './application/commands/delete-user/delete-user.service';
 import { FindUsersHandler } from './application/queries/find-users/find-users.handler';
 import { FindUserByIdHandler } from './application/queries/find-user-by-id/find-user-by-id.handler';
 import { UserRepository } from './application/ports/user.repository.port';
@@ -18,6 +20,7 @@ import { UserMapper } from './infrastructure/user.mapper';
     CreateUserController,
     UpdateUserController,
     DeactivateUserController,
+    DeleteUserController,
     FindUsersController,
     FindUserByIdController,
   ],
@@ -25,6 +28,7 @@ import { UserMapper } from './infrastructure/user.mapper';
     CreateUserService,
     UpdateUserService,
     DeactivateUserService,
+    DeleteUserService,
     FindUsersHandler,
     FindUserByIdHandler,
     UserMapper,

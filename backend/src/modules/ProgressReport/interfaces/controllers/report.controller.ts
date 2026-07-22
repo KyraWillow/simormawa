@@ -16,7 +16,7 @@ import { Role } from "../../../user/domain/user.entity";
 
 @Controller('progress-reports')
 @UseGuards(AuthGuard("jwt"), RolesGuard)
-@Roles(Role.BPH, Role.KADIV, Role.PIC_STAFF)
+@Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
 export class ReportController {
   constructor(
     private readonly createSvc: CreateReportService,
@@ -25,6 +25,7 @@ export class ReportController {
   ) {}
 
   @Post() @HttpCode(HttpStatus.CREATED)
+  @Roles(Role.PIC_STAFF, Role.ADMIN)
   async create(@Body() dto: CreateReportRequestDto) {
     const id = await this.createSvc.execute(new CreateReportCommand(dto.workProgramId, dto.submittedBy, dto.progressPct, dto.description, dto.obstacles));
     return { id };

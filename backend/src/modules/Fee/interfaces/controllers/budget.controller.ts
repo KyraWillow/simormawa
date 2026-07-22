@@ -22,7 +22,6 @@ import { Role } from "../../../user/domain/user.entity";
 
 @Controller('budgets')
 @UseGuards(AuthGuard("jwt"), RolesGuard)
-@Roles(Role.BPH, Role.KADIV, Role.BENDAHARA)
 export class BudgetController {
   constructor(
     private readonly createSvc: CreateBudgetService,
@@ -34,28 +33,34 @@ export class BudgetController {
   ) {}
 
   @Post() @HttpCode(HttpStatus.CREATED)
+  @Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.ADMIN)
   async create(@Body() dto: CreateBudgetRequestDto) {
     const id = await this.createSvc.execute(new CreateBudgetCommand(dto.workProgramId, dto.submittedBy, dto.items));
     return { id };
   }
   @Patch(':id/submit') @HttpCode(HttpStatus.OK)
+  @Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.ADMIN)
   async submit(@Param('id') id: string, @Body() body: any) {
     await this.submitSvc.execute(new SubmitBudgetCommand(id, body.notes));
     return { message: 'Budget submitted' };
   }
   @Patch(':id/approve') @HttpCode(HttpStatus.OK)
+  @Roles(Role.BPH, Role.ADMIN)
   async approve(@Param('id') id: string, @Body() body: any) {
     await this.approveSvc.execute(new ApproveBudgetCommand(id, body.action, body.notes));
     return { message: 'Budget ' + body.action };
   }
-  @Get() async findAll(@Query('workProgramId') wpId?: string) {
+  @Get() @Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
+  async findAll(@Query('workProgramId') wpId?: string) {
     const items = await this.listH.execute(new FindBudgetListQuery(wpId));
     return items.map((i: any) => new BudgetResponseDto(i));
   }
-  @Get('dashboard') async dashboard() {
+  @Get('dashboard') @Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
+  async dashboard() {
     return this.dashH.execute(new BudgetDashboardQuery());
   }
-  @Get(':id') async findById(@Param('id') id: string) {
+  @Get(':id') @Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
+  async findById(@Param('id') id: string) {
     return new BudgetResponseDto(await this.byIdH.execute(new FindBudgetByIdQuery(id)));
   }
 }

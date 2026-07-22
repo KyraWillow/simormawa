@@ -9,12 +9,8 @@ export class DeactivateUserService {
 
   async execute(command: DeactivateUserCommand): Promise<void> {
     const user = await this.userRepo.findById(command.id);
-
-    if (!user) {
-      throw new UserNotFoundError(command.id);
-    }
-
-    user.deactivate();
+    if (!user) throw new UserNotFoundError(command.id);
+    user.toggleStatus();
     await this.userRepo.save(user);
   }
 }

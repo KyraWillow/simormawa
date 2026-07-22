@@ -76,10 +76,15 @@ export class UserEntity extends AggregateRoot<UserProps> {
     }
 
     public deactivate(): void {
-        if (!this.props.isActive) {
-            return;
-        }
         this.props.isActive = false;
+    }
+
+    public activate(): void {
+        this.props.isActive = true;
+    }
+
+    public toggleStatus(): void {
+        this.props.isActive = !this.props.isActive;
     }
 
     static fromPersistence(id: string, props: UserProps): UserEntity {

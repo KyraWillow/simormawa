@@ -10,7 +10,7 @@ import { Role } from "../../../user/domain/user.entity";
 
 @Controller('work-programs')
 @UseGuards(AuthGuard("jwt"), RolesGuard)
-@Roles(Role.BPH, Role.KADIV, Role.ADMIN)
+@Roles(Role.KADIV, Role.ADMIN)
 export class DeleteWorkProgramController {
   constructor(private readonly service: DeleteWorkProgramService) {}
 

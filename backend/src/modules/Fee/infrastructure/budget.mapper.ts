@@ -1,16 +1,22 @@
+import { randomUUID } from 'crypto';
 import { BudgetEntity, BudgetStatus, BudgetItemProps } from '../domain/budget.entity';
 import { BudgetPersistenceModel, BudgetItemPersistenceModel } from './budget.persistence';
 
 export class BudgetMapper {
   toDomain(row: BudgetPersistenceModel, itemRows: BudgetItemPersistenceModel[]): BudgetEntity {
     const items: BudgetItemProps[] = itemRows.map(r => ({
-      itemName: r.item_name, quantity: r.quantity, unit: r.unit,
-      unitPrice: r.unit_price,
+      itemName: r.item_name,
+      quantity: Number(r.quantity),
+      unit: r.unit,
+      unitPrice: Number(r.unit_price),
     }));
     return BudgetEntity.fromPersistence(row.id, {
-      workProgramId: row.work_program_id, submittedBy: row.submitted_by,
-      status: row.status as BudgetStatus, totalAmount: row.total_amount,
-      items, notes: row.notes ?? undefined,
+      workProgramId: row.work_program_id,
+      submittedBy: row.submitted_by,
+      status: row.status as BudgetStatus,
+      totalAmount: Number(row.total_amount),
+      items,
+      notes: row.notes ?? undefined,
     });
   }
   toPersistence(e: BudgetEntity): { budget: BudgetPersistenceModel; items: BudgetItemPersistenceModel[] } {
@@ -20,8 +26,8 @@ export class BudgetMapper {
         status: e.status, total_amount: e.totalAmount, notes: e.notes ?? null,
         created_at: new Date(), updated_at: new Date(),
       },
-      items: e.items.map((item, i) => ({
-        id: e.id + '-item-' + i, budget_id: e.id,
+      items: e.items.map((item) => ({
+        id: randomUUID(), budget_id: e.id,
         item_name: item.itemName, quantity: item.quantity,
         unit: item.unit, unit_price: item.unitPrice,
         total_price: item.quantity * item.unitPrice,

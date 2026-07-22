@@ -85,6 +85,10 @@ export class EvaluationEntity extends AggregateRoot<EvaluationProps> {
     this.props.status = EvaluationStatus.SUBMITTED;
   }
 
+  updateIndicators(indicators: EvaluationIndicatorProps[]): void {
+    this.props.indicators = indicators;
+  }
+
   static fromPersistence(id: string, props: EvaluationProps): EvaluationEntity {
     return new EvaluationEntity(props, id);
   }

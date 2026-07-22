@@ -43,6 +43,15 @@ export class UserRepositoryImpl implements UserRepository {
     }
   }
 
+  async delete(id: string): Promise<void> {
+    const conn = await this.pool.getConnection();
+    try {
+      await conn.query('DELETE FROM users WHERE id = ?', [id]);
+    } finally {
+      conn.release();
+    }
+  }
+
   async save(user: UserEntity): Promise<UserEntity> {
     const existing = await this.findById(user.id);
     const conn = await this.pool.getConnection();

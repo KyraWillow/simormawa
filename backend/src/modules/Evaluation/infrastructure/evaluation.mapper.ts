@@ -1,5 +1,6 @@
 import { EvaluationEntity, EvaluationStatus, EvaluationIndicatorProps } from '../domain/evaluation.entity';
 import { EvaluationPersistenceModel, EvaluationIndicatorPersistenceModel } from './evaluation.persistence';
+import * as crypto from 'crypto';
 
 export class EvaluationMapper {
   toDomain(
@@ -43,7 +44,7 @@ export class EvaluationMapper {
     };
 
     const indicators: EvaluationIndicatorPersistenceModel[] = entity.indicators.map((ind, i) => ({
-      id: `${entity.id}-ind-${i}`,
+      id: crypto.randomUUID(),
       evaluation_id: entity.id,
       indicator_name: ind.indicatorName,
       target: ind.target,

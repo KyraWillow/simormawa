@@ -21,7 +21,6 @@ import { Role } from "../../../user/domain/user.entity";
 
 @Controller('evaluations')
 @UseGuards(AuthGuard("jwt"), RolesGuard)
-@Roles(Role.BPH, Role.KADIV)
 export class EvaluationController {
   constructor(
     private readonly createService: CreateEvaluationService,
@@ -33,6 +32,7 @@ export class EvaluationController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @Roles(Role.BPH, Role.KADIV, Role.ADMIN)
   async create(@Body() dto: CreateEvaluationRequestDto) {
     const id = await this.createService.execute(
       new CreateEvaluationCommand(dto.workProgramId, dto.evaluatedBy, dto.indicators),
@@ -42,23 +42,27 @@ export class EvaluationController {
 
   @Patch(':id/submit')
   @HttpCode(HttpStatus.OK)
+  @Roles(Role.BPH, Role.KADIV, Role.ADMIN)
   async submit(@Param('id') id: string, @Body() dto: SubmitEvaluationRequestDto) {
     await this.submitService.execute(new SubmitEvaluationCommand(id, dto.kesimpulan, dto.rekomendasi));
     return { message: 'Evaluation submitted' };
   }
 
   @Get()
+  @Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
   async findAll(@Query('workProgramId') workProgramId?: string) {
     const items = await this.findListHandler.execute(new FindEvaluationListQuery(workProgramId));
     return items.map((i: any) => new EvaluationResponseDto(i));
   }
 
   @Get('dashboard')
+  @Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
   async dashboard() {
     return this.dashboardHandler.execute(new EvaluationDashboardQuery());
   }
 
   @Get(':id')
+  @Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
   async findById(@Param('id') id: string) {
     const item = await this.findByIdHandler.execute(new FindEvaluationByIdQuery(id));
     return new EvaluationResponseDto(item);

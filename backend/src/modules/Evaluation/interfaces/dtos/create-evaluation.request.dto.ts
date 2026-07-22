@@ -1,4 +1,4 @@
-import { ArrayMinSize, IsArray, IsNumber, IsString, Max, Min, ValidateNested } from 'class-validator';
+import { ArrayMinSize, IsArray, IsNumber, IsOptional, IsString, Max, Min, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class IndicatorDto {
@@ -6,7 +6,7 @@ class IndicatorDto {
   @IsString() target: string;
   @IsString() realisasi: string;
   @IsNumber() @Min(1) @Max(5) score: number;
-  @IsString() notes?: string;
+  @IsOptional() @IsString() notes?: string;
 }
 
 export class CreateEvaluationRequestDto {

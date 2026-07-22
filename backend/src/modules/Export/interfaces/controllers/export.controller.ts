@@ -12,7 +12,7 @@ export class ExportController {
   constructor(private readonly exportService: ExportService) {}
 
   @Get('lpj/:id/pdf')
-  @Roles(Role.BPH, Role.KADIV, Role.SEKRETARIS, Role.ADMIN)
+  @Roles(Role.SEKRETARIS, Role.BENDAHARA, Role.ADMIN)
   async exportLpjPdf(@Param('id') id: string, @Res() res: Response) {
     const file = await this.exportService.exportLpjPdf(id);
     res.set(file.getHeaders());
@@ -20,7 +20,7 @@ export class ExportController {
   }
 
   @Get('evaluations/xlsx')
-  @Roles(Role.BPH, Role.KADIV, Role.ADMIN)
+  @Roles(Role.BPH, Role.ADMIN)
   async exportEvaluations(@Res() res: Response) {
     const file = await this.exportService.exportEvaluationsXlsx();
     res.set(file.getHeaders());
@@ -28,7 +28,7 @@ export class ExportController {
   }
 
   @Get('work-programs/xlsx')
-  @Roles(Role.BPH, Role.KADIV, Role.ADMIN)
+  @Roles(Role.ADMIN)
   async exportWorkPrograms(@Res() res: Response) {
     const file = await this.exportService.exportWorkProgramsXlsx();
     res.set(file.getHeaders());
@@ -36,7 +36,7 @@ export class ExportController {
   }
 
   @Get('budgets/xlsx')
-  @Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.ADMIN)
+  @Roles(Role.BENDAHARA, Role.ADMIN)
   async exportBudgets(@Res() res: Response) {
     const file = await this.exportService.exportBudgetsXlsx();
     res.set(file.getHeaders());

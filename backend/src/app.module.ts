@@ -16,7 +16,7 @@ import { DomainExceptionFilter } from './libs/filters/domain-exception.filter';
 import { ExportModule } from './modules/Export/export.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), DatabaseModule, UserModule, AuthModule, WorkProgramModule, EvaluationModule, FeeModule, ProgressReportModule, KasModule, DocumentModule, KakModule, NotificationModule],
+  imports: [ConfigModule.forRoot(), DatabaseModule, UserModule, AuthModule, WorkProgramModule, EvaluationModule, FeeModule, ProgressReportModule, KasModule, DocumentModule, KakModule, NotificationModule, ExportModule],
   providers: [
     {
       provide: APP_FILTER,

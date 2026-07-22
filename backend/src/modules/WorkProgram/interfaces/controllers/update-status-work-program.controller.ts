@@ -18,7 +18,7 @@ export class UpdateStatusRequest {
 
 @Controller('work-programs')
 @UseGuards(AuthGuard("jwt"), RolesGuard)
-@Roles(Role.BPH, Role.KADIV, Role.PIC_STAFF, Role.ADMIN)
+@Roles(Role.KADIV, Role.PIC_STAFF, Role.ADMIN)
 export class UpdateStatusWorkProgramController {
   constructor(private readonly service: UpdateStatusWorkProgramService) {}
 

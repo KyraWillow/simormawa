@@ -16,7 +16,7 @@ import { Role } from "../../../user/domain/user.entity";
 
 @Controller('documents')
 @UseGuards(AuthGuard("jwt"), RolesGuard)
-@Roles(Role.BPH, Role.KADIV, Role.PIC_STAFF, Role.SEKRETARIS, Role.ADMIN)
+@Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
 export class DocumentController {
   constructor(
     private readonly uploadSvc: UploadDocumentService,
@@ -24,6 +24,7 @@ export class DocumentController {
   ) {}
 
   @Post('upload')
+  @Roles(Role.BPH, Role.KADIV, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({

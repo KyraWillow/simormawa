@@ -1,4 +1,5 @@
 import { AggregateRoot } from '../../../libs/ddd/aggregate-root.base';
+import { randomUUID } from 'crypto';
 
 export enum TransactionType {
   PEMASUKAN = 'pemasukan',
@@ -39,7 +40,7 @@ export class KasEntity extends AggregateRoot<KasProps> {
   recordTransaction(type: TransactionType, amount: number, description: string, createdBy: string, budgetId?: string): void {
     if (amount <= 0) throw new Error('Amount must be positive');
     const tx: KasTransactionProps = {
-      id: this.props.transactions.length.toString(),
+      id: randomUUID(),
       type,
       amount,
       description,

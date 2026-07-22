@@ -11,7 +11,7 @@ import { Role } from "../../domain/user.entity";
 
 @Controller('users')
 @UseGuards(AuthGuard("jwt"), RolesGuard)
-@Roles(Role.ADMIN, Role.BPH)
+@Roles(Role.ADMIN)
 export class DeactivateUserController {
   constructor(private readonly deactivateUserService: DeactivateUserService) {}
 

@@ -42,6 +42,17 @@ export class KasRepositoryImpl implements KasRepository {
       } else {
         await conn.query('INSERT INTO kas (id, balance, updated_at) VALUES (?, ?, NOW())', [p.id, p.balance]);
       }
+
+      const existingTxs = await conn.query('SELECT id FROM kas_transactions WHERE kas_id = ?', [entity.id]);
+      const existingTxIds = new Set(existingTxs.map((r: any) => r.id));
+      for (const tx of entity.transactions) {
+        if (!existingTxIds.has(tx.id)) {
+          await conn.query(
+            'INSERT INTO kas_transactions (id, kas_id, budget_id, type, amount, description, transaction_date, created_by) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [tx.id, entity.id, tx.budgetId || null, tx.type, tx.amount, tx.description, tx.transactionDate, tx.createdBy]
+          );
+        }
+      }
       return entity;
     } finally {
       conn.release();

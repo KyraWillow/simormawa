@@ -15,6 +15,7 @@ import mariadb from 'mariadb';
                     user: config.get('DB_USER'),
                     password: config.get('DB_PASSWORD'),
                     database: config.get('DB_NAME'),
+                    decimalAsNumber: true,
                 });
             },
             inject: [ConfigService]

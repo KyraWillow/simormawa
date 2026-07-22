@@ -50,15 +50,15 @@ export class BudgetRepositoryImpl implements BudgetRepository {
     try {
       const { budget, items } = this.mapper.toPersistence(entity);
       if (existing) {
-        await conn.query('UPDATE budgets SET status=?, notes=?, updated_at=NOW() WHERE id=?', [budget.status, budget.notes, entity.id]);
+        await conn.query('UPDATE budgets SET status=?, total_amount=?, notes=?, updated_at=NOW() WHERE id=?', [budget.status, budget.total_amount, budget.notes, entity.id]);
         await conn.query('DELETE FROM budget_items WHERE budget_id=?', [entity.id]);
       } else {
         await conn.query('INSERT INTO budgets (id,work_program_id,submitted_by,status,total_amount,notes,created_at,updated_at) VALUES (?,?,?,?,?,?,NOW(),NOW())',
           [budget.id, budget.work_program_id, budget.submitted_by, budget.status, budget.total_amount, budget.notes]);
       }
       for (const item of items) {
-        await conn.query('INSERT INTO budget_items (id,budget_id,item_name,quantity,unit,unit_price,total_price) VALUES (?,?,?,?,?,?,?)',
-          [item.id, item.budget_id, item.item_name, item.quantity, item.unit, item.unit_price, item.total_price]);
+        await conn.query('INSERT INTO budget_items (id,budget_id,item_name,quantity,unit,unit_price) VALUES (?,?,?,?,?,?)',
+          [item.id, item.budget_id, item.item_name, item.quantity, item.unit, item.unit_price]);
       }
       return entity;
     } finally { conn.release(); }

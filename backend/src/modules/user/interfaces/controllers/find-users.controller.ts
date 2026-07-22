@@ -11,7 +11,7 @@ import { Role } from "../../domain/user.entity";
 
 @Controller('users')
 @UseGuards(AuthGuard("jwt"), RolesGuard)
-@Roles(Role.ADMIN, Role.BPH)
+@Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
 export class FindUsersController {
   constructor(private readonly findUsersHandler: FindUsersHandler) {}
 

@@ -8,13 +8,17 @@ import { RolesGuard } from "../../../auth/infrastructure/roles.guard";
 import { Roles } from "../../../auth/infrastructure/roles.decorator";
 import { Role } from "../../../user/domain/user.entity";
 
+import { IsNotEmpty, IsString } from 'class-validator';
+
 export class AssignPicRequest {
+  @IsString()
+  @IsNotEmpty()
   picId: string;
 }
 
 @Controller('work-programs')
 @UseGuards(AuthGuard("jwt"), RolesGuard)
-@Roles(Role.BPH, Role.KADIV, Role.ADMIN)
+@Roles(Role.KADIV, Role.ADMIN)
 export class AssignPicController {
   constructor(private readonly service: AssignPicService) {}
 

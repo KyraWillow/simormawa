@@ -10,7 +10,7 @@ import { Role } from "../../../user/domain/user.entity";
 
 @Controller('work-programs')
 @UseGuards(AuthGuard("jwt"), RolesGuard)
-@Roles(Role.BPH, Role.KADIV, Role.ADMIN)
+@Roles(Role.BPH, Role.KADIV, Role.BENDAHARA, Role.SEKRETARIS, Role.PIC_STAFF, Role.ADMIN)
 export class DashboardWorkProgramController {
   constructor(private readonly handler: DashboardWorkProgramHandler) {}
 

@@ -7,8 +7,9 @@ async function bootstrap() {
 
   const port = process.env.PORT ?? 3000;
   const origin = process.env.CORS_ORIGIN ?? 'http://localhost:5173';
+  const origins = origin.split(',').map(s => s.trim());
 
-  app.enableCors({ origin: [origin], credentials: true });
+  app.enableCors({ origin: origins, credentials: true });
 
   app.useGlobalPipes(
     new ValidationPipe({

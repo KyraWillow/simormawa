@@ -54,7 +54,7 @@
     </a-table>
 
     <a-modal v-model:open="showTx" :title="txType==='pemasukan'?'Pemasukan':'Pengeluaran'" @ok="handleTx" :confirmLoading="savingTx">
-      <div class="fg"><label>Jumlah (Rp)</label><input v-model.number="txForm.amount" type="number" min="1" class="fi" /></div>
+      <div class="fg"><label>Jumlah (Rp)</label><input v-model="txForm._amountDisplay" type="text" class="fi" @input="onAmountInput" /></div>
       <div class="fg"><label>Keterangan</label><textarea v-model="txForm.description" class="fi" rows="2"></textarea></div>
     </a-modal>
 
@@ -76,7 +76,7 @@
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
           <div class="fg"><label>Jumlah</label><input v-model.number="item.quantity" type="number" min="1" class="fi" /></div>
           <div class="fg"><label>Satuan</label><input v-model="item.unit" class="fi" /></div>
-          <div class="fg"><label>Harga</label><input v-model.number="item.unitPrice" type="number" min="0" class="fi" /></div>
+          <div class="fg"><label>Harga</label><input v-model="item._priceDisplay" type="text" class="fi" @input="onPriceInput(item, $event)" /></div>
         </div>
         <div style="text-align:right;color:#3F72AF;font-weight:600">Rp {{(item.quantity*item.unitPrice).toLocaleString('id-ID')}}</div>
       </div>
@@ -107,21 +107,35 @@ const loadingKas = ref(false)
 const showTx = ref(false)
 const savingTx = ref(false)
 const txType = ref('pemasukan')
-const txForm = ref({ amount: 0, description: '' })
+const txForm = ref({ amount: 0, description: '', _amountDisplay: '0' })
+
+const onAmountInput = (e: Event) => {
+  const raw = (e.target as HTMLInputElement).value.replace(/\D/g, '')
+  txForm.value.amount = parseInt(raw) || 0
+  txForm.value._amountDisplay = txForm.value.amount.toLocaleString('id-ID');
+  (e.target as HTMLInputElement).value = txForm.value._amountDisplay
+}
 
 const sc = (s:string) => ({ draft:'default', submitted:'processing', approved:'success', rejected:'error' })[s] || 'default'
-const addItem = () => form.value.items.push({itemName:'', quantity:1, unit:'', unitPrice:0})
+const addItem = () => form.value.items.push({itemName:'', quantity:1, unit:'', unitPrice:0, _priceDisplay:'0'})
 
 const openCreate = async () => {
   prokerList.value = await workProgramApi.list()
   userList.value = await userApi.list()
-  form.value = { workProgramId:'', submittedBy:'', items:[{itemName:'', quantity:1, unit:'', unitPrice:0}] }
+  form.value = { workProgramId:'', submittedBy:'', items:[{itemName:'', quantity:1, unit:'', unitPrice:0, _priceDisplay:'0'}] }
   showCreate.value = true
+}
+
+const onPriceInput = (item: any, e: Event) => {
+  const raw = (e.target as HTMLInputElement).value.replace(/\D/g, '')
+  item.unitPrice = parseInt(raw) || 0
+  item._priceDisplay = item.unitPrice.toLocaleString('id-ID');
+  (e.target as HTMLInputElement).value = item._priceDisplay
 }
 
 const openTx = (type:string) => {
   txType.value = type
-  txForm.value = { amount: 0, description: '' }
+  txForm.value = { amount: 0, description: '', _amountDisplay: '0' }
   showTx.value = true
 }
 

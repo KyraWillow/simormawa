@@ -26,13 +26,13 @@
       <h3 style="margin:0 0 8px;color:#112D4E;font-size:1rem">Rincian Anggaran</h3>
       <div v-for="(item, i) in form.budgetItems" :key="i" class="budget-row">
         <input v-model="item.itemName" class="fi-sm" placeholder="Nama item" />
-        <input v-model.number="item.quantity" type="number" min="1" class="fi-sm" placeholder="Qty" style="width:60px" />
+        <input v-model.number="item.quantity" type="text" inputmode="numeric" min="1" class="fi-sm" placeholder="Qty" style="width:60px" />
         <input v-model="item.unit" class="fi-sm" placeholder="Satuan" style="width:70px" />
-        <input v-model.number="item.unitPrice" type="number" min="0" class="fi-sm" placeholder="Harga" style="width:100px" />
+        <input v-model="item._priceDisplay" type="text" class="fi-sm" placeholder="Harga" style="width:110px" @input="onPriceInput(item, $event)" />
         <span style="font-size:0.85rem;font-weight:600;color:#112D4E;min-width:80px;text-align:right">{{ formatRp(item.quantity * item.unitPrice) }}</span>
         <a-button size="small" danger @click="form.budgetItems.splice(i,1)" v-if="form.budgetItems.length>1">×</a-button>
       </div>
-      <a-button type="dashed" size="small" @click="form.budgetItems.push({itemName:'',quantity:1,unit:'',unitPrice:0})">+ Tambah Item</a-button>
+      <a-button type="dashed" size="small" @click="form.budgetItems.push({itemName:'',quantity:1,unit:'',unitPrice:0,_priceDisplay:'0'})">+ Tambah Item</a-button>
       <div v-if="form.budgetItems.length" style="margin-top:8px;font-size:0.9rem;font-weight:600;color:#112D4E">
         Total Anggaran: {{ formatRp(form.budgetItems.reduce((s,i)=>s+i.quantity*i.unitPrice,0)) }}
       </div>
@@ -64,10 +64,17 @@ const form = ref({
   description: '',
   picId: '',
   deadlineStr: '',
-  budgetItems: [] as { itemName: string; quantity: number; unit: string; unitPrice: number }[],
+  budgetItems: [] as { itemName: string; quantity: number; unit: string; unitPrice: number; _priceDisplay?: string }[],
 })
 
 const formatRp = (n: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(n)
+
+const onPriceInput = (item: any, e: Event) => {
+  const raw = (e.target as HTMLInputElement).value.replace(/\D/g, '')
+  item.unitPrice = parseInt(raw) || 0
+  item._priceDisplay = item.unitPrice.toLocaleString('id-ID');
+  (e.target as HTMLInputElement).value = item._priceDisplay
+}
 
 onMounted(async () => {
   try { userList.value = await userApi.list() } catch {}
